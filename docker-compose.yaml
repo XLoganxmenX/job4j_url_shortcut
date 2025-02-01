@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  shortcutdb:
+    image: postgres
+    container_name: shortcutdb
+    environment:
+      - POSTGRES_DB=shortcut
+      - POSTGRES_PASSWORD=compose-postgres-shortcut
+      - POSTGRES_USER=compose-postgres-shortcut
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - ./db/shortcut/data:/var/lib/postgresql/data
+    restart: always
+  shortcut:
+    container_name: shortcut
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://shortcutdb:5432/shortcut
+      - SPRING_DATASOURCE_USERNAME=compose-postgres-shortcut
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres-shortcut
+    ports:
+      - "9900:9900"
+    depends_on:
+      - shortcutdb

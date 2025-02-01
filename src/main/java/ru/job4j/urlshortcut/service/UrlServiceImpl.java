@@ -22,7 +22,6 @@ public class UrlServiceImpl implements UrlService {
     private final UrlMapper urlMapper;
 
     @Override
-    @Transactional
     public ShortUrlResponseDTO convertAndSave(Site site, String url) {
         String shortUrl = CodeGenerator.generateCodeFrom(url);
         Url newUrl = Url.builder()
